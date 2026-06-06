@@ -1,6 +1,8 @@
 /**
- * Additional exercise library — saved for future use, not shown in the app yet.
+ * Additional exercise library — shown under "Other" in the exercises info modal.
  */
+
+import { PRIORITY_EXERCISES } from "./gymPriorityExercises";
 
 export interface ExtraExercise {
   name: string;
@@ -200,3 +202,20 @@ export const EXTRA_EXERCISES: ExtraExerciseCategory[] = [
     ],
   },
 ];
+
+function normalizeExerciseName(name: string): string {
+  return name.replace(/\s*\([^)]*\)/g, "").trim().toLowerCase();
+}
+
+const PRIORITY_NORMALIZED = new Set(
+  PRIORITY_EXERCISES.map((name) => normalizeExerciseName(name))
+);
+
+export function getOtherExerciseCategories(): ExtraExerciseCategory[] {
+  return EXTRA_EXERCISES.map((category) => ({
+    ...category,
+    exercises: category.exercises.filter(
+      (exercise) => !PRIORITY_NORMALIZED.has(normalizeExerciseName(exercise.name))
+    ),
+  })).filter((category) => category.exercises.length > 0);
+}
