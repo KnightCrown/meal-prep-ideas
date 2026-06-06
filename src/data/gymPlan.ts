@@ -9,6 +9,20 @@ export interface ExerciseDetail {
   restLabel: string;
 }
 
+/** Dumbbells required per exercise — shown only in the workout lightbox. */
+export const EXERCISE_DUMBBELLS: Record<string, number> = {
+  "Goblet Squat": 1,
+  "Romanian Deadlift": 2,
+  "Reverse Lunge": 2,
+  "One-Arm Dumbbell Row": 1,
+  "Dumbbell Floor Press": 2,
+  "Dumbbell Shoulder Press": 2,
+  "Bicep Curl": 2,
+  "Overhead Tricep Extension": 1,
+  "Farmer's Carry": 2,
+  Plank: 0,
+};
+
 export interface Workout {
   id: WorkoutId;
   title: string;

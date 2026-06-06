@@ -1,4 +1,16 @@
-import type { ExerciseDetail } from "@/data/gymPlan";
+import { EXERCISE_DUMBBELLS, type ExerciseDetail } from "@/data/gymPlan";
+
+function formatDumbbellRequirement(count: number): string {
+  return count === 1 ? "1 dumbbell" : `${count} dumbbells`;
+}
+
+export function getExerciseLightboxName(name: string): string {
+  const count = EXERCISE_DUMBBELLS[name];
+  if (count === undefined) {
+    return name;
+  }
+  return `${name} (${formatDumbbellRequirement(count)})`;
+}
 
 function medianFromRange(min: number, max: number): number {
   return Math.round((min + max) / 2);

@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useEffect, useLayoutEffect, useMemo, useState, type KeyboardEvent as ReactKeyboardEvent } from "react";
 import {
   buildWeeklyGymSchedule,
@@ -9,8 +10,9 @@ import {
   type Workout,
 } from "@/data/gymPlan";
 import { PRIORITY_EXERCISES } from "@/data/gymPriorityExercises";
+import { getExerciseImageSrc } from "@/data/gymExerciseImages";
 import { useGymWeek } from "@/hooks/useGymWeek";
-import { getExerciseCardSummary } from "@/lib/gymExerciseDisplay";
+import { getExerciseCardSummary, getExerciseLightboxName } from "@/lib/gymExerciseDisplay";
 import {
   getTodayWeekdayIndex,
   WEEKDAYS,
@@ -157,19 +159,39 @@ function WorkoutLightbox({
           </p>
         )}
 
-        <div className="space-y-5">
-          {workout.exercises.map((exercise) => (
-            <div key={exercise.name} className="space-y-1">
-              <p className="text-base font-semibold text-zinc-900 dark:text-zinc-50">
-                {exercise.name}
-              </p>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">{exercise.setsLabel}</p>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">{exercise.repsLabel}</p>
-              <p className="text-sm text-zinc-600 dark:text-zinc-400">
-                Rest: {exercise.restLabel}
-              </p>
-            </div>
-          ))}
+        <div className="space-y-8">
+          {workout.exercises.map((exercise) => {
+            const imageSrc = getExerciseImageSrc(exercise.name);
+
+            return (
+              <div
+                key={exercise.name}
+                className="space-y-3 pb-8 border-b border-zinc-100 dark:border-zinc-800 last:border-b-0 last:pb-0"
+              >
+                {imageSrc && (
+                  <div className="relative w-full aspect-[16/10] overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900">
+                    <Image
+                      src={imageSrc}
+                      alt={exercise.name}
+                      fill
+                      className="object-contain p-2"
+                      sizes="(max-width: 512px) 100vw, 512px"
+                    />
+                  </div>
+                )}
+                <div className="space-y-1">
+                  <p className="text-base font-semibold text-zinc-900 dark:text-zinc-50">
+                    {getExerciseLightboxName(exercise.name)}
+                  </p>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">{exercise.setsLabel}</p>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">{exercise.repsLabel}</p>
+                  <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                    Rest: {exercise.restLabel}
+                  </p>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         <p className="mt-6 pt-4 border-t border-zinc-100 dark:border-zinc-800 text-sm font-medium text-zinc-700 dark:text-zinc-300">
