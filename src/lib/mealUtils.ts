@@ -28,6 +28,22 @@ export const WEEKDAYS = [
 
 export type Weekday = (typeof WEEKDAYS)[number];
 
+/** Monday = 0 … Sunday = 6 */
+export function getTodayWeekdayIndex(): number {
+  const jsDay = new Date().getDay();
+  return jsDay === 0 ? 6 : jsDay - 1;
+}
+
+export const WEEKDAY_SHORT: Record<Weekday, string> = {
+  Monday: "Mon",
+  Tuesday: "Tue",
+  Wednesday: "Wed",
+  Thursday: "Thu",
+  Friday: "Fri",
+  Saturday: "Sat",
+  Sunday: "Sun",
+};
+
 export function getMealId(category: MealCategory, meal: Meal): string {
   return `${category}:${meal.name}`;
 }
